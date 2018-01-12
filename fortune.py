@@ -66,7 +66,29 @@ def root():
             dict (
                 href  = mk_url ('/'),
                 data = [
-                    dict ( name = 'fortune', value = fortune)
+                    dict (name = 'fortune', value = fortune)
+                ],
+            )
+        ],
+    ))
+
+    response.set_header ('Content-Type', 'application/vnd.collection+json')
+    return json.dumps (r)
+
+@app.get('/short')
+def short():
+    fortune = subprocess.run (
+        ['fortune', '-s'],
+        stdout = subprocess.PIPE,
+    ).stdout.decode()
+
+    r = res()
+    r.get('collection').update (dict (
+        items = [
+            dict (
+                href  = mk_url ('/'),
+                data = [
+                    dict (name = 'fortune', value = fortune)
                 ],
             )
         ],
@@ -89,7 +111,7 @@ def root():
             dict (
                 href  = mk_url ('/offensive'),
                 data = [
-                    dict ( name = 'offensive fortune', value = fortune)
+                    dict (name = 'offensive fortune', value = fortune)
                 ],
             )
         ],
